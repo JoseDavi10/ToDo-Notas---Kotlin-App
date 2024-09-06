@@ -14,12 +14,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val btnViewNotes = findViewById<Button>(R.id.btn_view_notes)
+        val viewNotesButton = findViewById<Button>(R.id.notes_list_view)
         val btnCreateNote = findViewById<Button>(R.id.btn_create_note)
         val btnEditNote = findViewById<Button>(R.id.btn_edit_note)
 
-        btnViewNotes.setOnClickListener {
-            loadFragment(NoteListFragment.newInstance(notes))
+        viewNotesButton.setOnClickListener {
+            val intent = Intent(this, ViewNotesActivity::class.java)
+            intent.putParcelableArrayListExtra("notes", ArrayList(notes))
+            startActivity(intent)
         }
 
         btnCreateNote.setOnClickListener {
@@ -28,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnEditNote.setOnClickListener {
-            val intent = Intent(this, NoteEditActivity::class.java)
+            val intent = Intent(this, EditNoteActivity::class.java)
             intent.putParcelableArrayListExtra("notes", ArrayList(notes))
             startActivity(intent)
         }
