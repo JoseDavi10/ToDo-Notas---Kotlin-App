@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -24,16 +25,28 @@
         <activity android:name=".CreateNoteActivity" />
         <activity android:name="com.example.todonotes.EditNoteActivity" />
         <activity android:name=".ViewNotesActivity" />
+        <activity android:name=".NoteDetailActivity"></activity>
+        <service android:name=".NoteSaveService" />
 
-        <service android:name=".SyncNotesService" />
+        <service android:name=".ConnectivityReceiver" />
 
-        <receiver android:name=".NoteSyncReceiver"
+        <receiver android:name=".NoteSaveService"
             android:exported="true"
             android:permission="TODO">
             <intent-filter>
                 <action android:name="com.example.todonotes.SYNC_COMPLETED" />
             </intent-filter>
         </receiver>
+
+        <receiver android:name=".ConnectivityReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"
+                    tools:ignore="BatteryLife" />
+            </intent-filter>
+        </receiver>
+
+
     </application>
 
 </manifest>

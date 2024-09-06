@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 
 class CreateNoteActivity : AppCompatActivity() {
 
@@ -19,21 +20,28 @@ class CreateNoteActivity : AppCompatActivity() {
         val contentEditText = findViewById<EditText>(R.id.note_content_edit)
         val btnSaveNote = findViewById<Button>(R.id.btn_save_note)
 
+
         btnSaveNote.setOnClickListener {
-            val title = titleEditText.text.toString()
-            val content = contentEditText.text.toString()
+            titleEditText.text.toString()
+            val noteContent = contentEditText.text.toString()
 
-            if (title.isNotEmpty() && content.isNotEmpty()) {
-                val newNote = Note(
-                    id = noteIdCounter++,
-                    title = title,
-                    content = content
-                )
+            if (noteContent.isNotEmpty()) {
+                // salvando a nota numa lista global
 
-                val resultIntent = Intent()
-                resultIntent.putExtra("note", newNote)
-                setResult(Activity.RESULT_OK, resultIntent)
+                NoteStorage.notes.add(noteContent)
+
+                // Iniciar o Service para salvar a nota em segundo plano
+                val intent = Intent(this, NoteSaveService::class.java)
+                intent.putExtra("note_content", noteContent)
+                startService(intent)
+
+                // Exibir mensagem de sucesso
+                Toast.makeText(this, "Nota salva com sucesso", Toast.LENGTH_SHORT).show()
+
+                // Voltar para a tela anterior
                 finish()
+            } else {
+                Toast.makeText(this, "Por favor, escreva algo na nota", Toast.LENGTH_SHORT).show()
             }
         }
     }

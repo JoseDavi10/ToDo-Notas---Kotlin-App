@@ -57,4 +57,6 @@ class MainActivity : AppCompatActivity() {
     companion object {
         const val CREATE_NOTE_REQUEST_CODE = 1
     }
+
+
 }
